@@ -1,0 +1,23 @@
+{
+  "name": "dbi-bot-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "DBI Bot - Digital Book of India Support Assistant backend",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "mammoth": "^1.12.0",
+    "mongoose": "^8.13.2",
+    "openai": "^6.15.0"
+  }
+}
