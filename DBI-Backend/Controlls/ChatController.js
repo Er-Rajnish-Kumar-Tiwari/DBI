@@ -2,7 +2,7 @@ const { primaryClient, secondaryClient } = require("../Config/openai");
 const { loadKnowledgeBase } = require("../Utils/knowledgeBase");
 const ChatLog = require("../Models/ChatLog");
 
-const MODEL = "gemini-2.5-flash";
+const MODEL = "gemini-flash-latest";
 const MAX_HISTORY = 12;
 
 const LANGUAGE_HINT = {
