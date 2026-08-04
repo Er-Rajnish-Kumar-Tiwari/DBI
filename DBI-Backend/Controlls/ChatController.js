@@ -1,6 +1,7 @@
 const { primaryClient, secondaryClient } = require("../Config/openai");
 const { loadKnowledgeBase } = require("../Utils/knowledgeBase");
 const ChatLog = require("../Models/ChatLog");
+const Message = require("../Models/Message");
 
 const MODEL = "gemini-flash-latest";
 const MAX_HISTORY = 12;
@@ -44,7 +45,7 @@ const askModel = async (messages) => {
 
 const sendMessage = async (req, res) => {
     try {
-        const { message, history, lang } = req.body;
+        const { message, history, lang, userId } = req.body;
 
         if (!message || !message.trim()) {
             return res.status(400).json({
@@ -88,6 +89,14 @@ const sendMessage = async (req, res) => {
         // Fire-and-forget anonymous log; never blocks or breaks the chat response.
         ChatLog.create({ message, reply: content, language: lang || "auto" }).catch(() => {});
 
+        // Fire-and-forget per-user history, when the request came from a logged-in user.
+        if (userId) {
+            Message.insertMany([
+                { user: userId, role: "user", content: message },
+                { user: userId, role: "assistant", content },
+            ]).catch(() => {});
+        }
+
         return res.status(200).json({
             success: true,
             reply,
@@ -102,4 +111,28 @@ const sendMessage = async (req, res) => {
     }
 };
 
-module.exports = { sendMessage };
+// Returns a logged-in user's saved chat history so the frontend can
+// repopulate the conversation on return visits.
+const getHistory = async (req, res) => {
+    try {
+        const { userId } = req.params;
+
+        const messages = await Message.find({ user: userId })
+            .sort({ createdAt: 1 })
+            .lean();
+
+        return res.status(200).json({
+            success: true,
+            messages: messages.map((m) => ({
+                role: m.role,
+                content: m.content,
+                timestamp: m.createdAt,
+            })),
+        });
+    } catch (error) {
+        console.error("History error:", error.message);
+        return res.status(500).json({ success: false, message: "Failed to load chat history" });
+    }
+};
+
+module.exports = { sendMessage, getHistory };

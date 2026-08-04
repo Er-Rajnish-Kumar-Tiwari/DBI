@@ -5,7 +5,7 @@ import { assets } from "../assets/assets";
 const DBI_WEBSITE = "https://digitalbookofindia.com";
 
 const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
-  const { theme, setTheme, lang, setLang, clearChat, messages } = useAppContext();
+  const { theme, setTheme, lang, setLang, clearChat, messages, user, logout } = useAppContext();
 
   const handleNewChat = () => {
     clearChat();
@@ -20,7 +20,7 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
 
   return (
     <div
-      className={`flex flex-col h-screen w-72 shrink-0 p-5 dark:bg-gradient-to-b from-[#242124]/30 to-[#000000]/30 border-r border-[#80609F]/30 backdrop-blur-3xl transition-all duration-500 max-md:absolute left-0 z-20 ${
+      className={`flex flex-col h-screen w-72 shrink-0 p-5 dark:bg-[#0a225e]/40 border-r border-[#2D4F9E]/30 backdrop-blur-3xl transition-all duration-500 max-md:absolute left-0 z-20 ${
         !isMenuOpen && "max-md:-translate-x-full"
       }`}
     >
@@ -28,7 +28,7 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
         <img src={assets.logo} alt="DBI Bot" className="w-9 h-9" />
         <div>
           <p className="font-semibold text-lg leading-tight">DBI Bot</p>
-          <p className="text-xs text-gray-500 dark:text-[#B1A6C0]">Digital Book of India Support</p>
+          <p className="text-xs text-gray-500 dark:text-[#9FB3DE]">Digital Book of India Support</p>
         </div>
       </div>
 
@@ -41,7 +41,7 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
       </button>
 
       <div className="mt-6">
-        <p className="text-xs text-gray-500 dark:text-[#B1A6C0] mb-2">Reply language</p>
+        <p className="text-xs text-gray-500 dark:text-[#9FB3DE] mb-2">Reply language</p>
         <div className="flex gap-2">
           {languages.map((l) => (
             <button
@@ -71,6 +71,25 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
 
       <div className="flex-1" />
 
+      {user && (
+        <div className="flex items-center gap-2 p-3 border border-gray-300 dark:border-white/15 rounded-md justify-between">
+          <div className="flex items-center gap-2 text-sm min-w-0">
+            <img src={assets.user_icon} alt="User" className="w-6 h-6 rounded-full shrink-0" />
+            <div className="min-w-0">
+              <p className="truncate">{user.name}</p>
+              <p className="text-xs text-gray-500 dark:text-[#9FB3DE] truncate">{user.email}</p>
+            </div>
+          </div>
+
+          <button
+            onClick={logout}
+            className="text-xs text-gray-500 dark:text-[#9FB3DE] hover:text-purple-500 cursor-pointer shrink-0"
+          >
+            Logout
+          </button>
+        </div>
+      )}
+
       <div className="flex items-center gap-2 p-3 mt-4 border border-gray-300 dark:border-white/15 rounded-md justify-between">
         <div className="flex items-center gap-2 text-sm">
           <img src={assets.theme_icon} alt="Theme" className="w-4 brightness-0 dark:invert" />
@@ -84,12 +103,12 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
             checked={theme === "dark"}
             onChange={() => setTheme(theme === "dark" ? "light" : "dark")}
           />
-          <div className="w-9 h-5 bg-gray-400 rounded-full peer-checked:bg-purple-600 transition-all"></div>
+          <div className="w-9 h-5 bg-gray-400 rounded-full peer-checked:bg-[#2D4F9E] transition-all"></div>
           <span className="absolute left-1 top-1 w-3 h-3 bg-white rounded-full transition-transform peer-checked:translate-x-4"></span>
         </label>
       </div>
 
-      <p className="text-[10px] text-center text-gray-400 dark:text-[#6B6178] mt-4">
+      <p className="text-[10px] text-center text-gray-400 dark:text-[#6C84B8] mt-4">
         DBI Bot can make mistakes. Verify important info on the DBI website.
       </p>
 

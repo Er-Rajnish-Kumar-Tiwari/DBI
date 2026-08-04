@@ -28,15 +28,15 @@ const Message = ({ message }) => {
       {message?.role === "user" ? (
         <div className='flex items-center justify-end my-4 gap-2'>
 
-          <div className='flex flex-col gap-2 p-2 px-4 bg-slate-50 dark:bg-[#57317C]/30 border border-[#80609F]/30 rounded-md max-w-2xl'>
+          <div className='flex flex-col gap-2 p-2 px-4 bg-slate-50 dark:bg-[#14367a]/30 border border-[#2D4F9E]/30 rounded-md max-w-2xl'>
 
-            <p className='text-sm dark:text-primary'>
+            <p className='text-sm dark:text-[#D8E4FF]'>
               {message?.content}
             </p>
 
             <div className='flex items-center justify-between gap-4'>
 
-              <span className='text-xs text-gray-400 dark:text-[#B1A6C0]'>
+              <span className='text-xs text-gray-400 dark:text-[#9FB3DE]'>
                 {moment(message?.timestamp).fromNow()}
               </span>
 
@@ -59,15 +59,15 @@ const Message = ({ message }) => {
           />
         </div>
       ) : (
-        <div className='inline-flex flex-col gap-2 p-2 px-2 max-w-2xl bg-primary/20 dark:bg-[#57317C]/30 border border-[#80609F]/30 rounded-md my-4'>
+        <div className='inline-flex flex-col gap-2 p-2 px-2 max-w-2xl bg-primary/20 dark:bg-[#14367a]/30 border border-[#2D4F9E]/30 rounded-md my-4'>
 
-          <div className='text-sm dark:text-primary reset-tw'>
+          <div className='text-sm dark:text-[#D8E4FF] reset-tw'>
             <Markdown>{message?.content}</Markdown>
           </div>
 
           <div className='flex items-center justify-between px-1 mt-1'>
 
-            <span className='text-xs text-gray-400 dark:text-[#B1A6C0]'>
+            <span className='text-xs text-gray-400 dark:text-[#9FB3DE]'>
               {moment(message?.timestamp).fromNow()}
             </span>
 

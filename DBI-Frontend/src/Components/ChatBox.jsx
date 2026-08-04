@@ -41,7 +41,7 @@ const UI_TEXT = {
 
 const ChatBox = () => {
 
-  const { messages, setMessages, loading, setLoading, lang, toast, axios } = useAppContext();
+  const { messages, setMessages, loading, setLoading, lang, toast, axios, user } = useAppContext();
   const [prompt, setPrompt] = useState("");
   const containerRef = useRef(null);
 
@@ -58,7 +58,7 @@ const ChatBox = () => {
     setMessages(prev => [...prev, { role: "user", content: trimmed, timestamp: Date.now() }]);
 
     try {
-      const { data } = await axios.post("/chat/message", { message: trimmed, history, lang });
+      const { data } = await axios.post("/chat/message", { message: trimmed, history, lang, userId: user?.id });
 
       if (data.success) {
         setMessages(prev => [...prev, data.reply]);
@@ -105,7 +105,7 @@ const ChatBox = () => {
                 <button
                   key={q}
                   onClick={() => sendMessage(q)}
-                  className='text-sm px-4 py-2 rounded-full border border-primary dark:border-[#80609F]/40 bg-primary/10 dark:bg-[#57317C]/20 hover:bg-primary/20 dark:hover:bg-[#57317C]/40 transition-all cursor-pointer'
+                  className='text-sm px-4 py-2 rounded-full border border-primary dark:border-[#2D4F9E]/40 bg-primary/10 dark:bg-[#14367a]/20 hover:bg-primary/20 dark:hover:bg-[#14367a]/40 transition-all cursor-pointer'
                 >
                   {q}
                 </button>
@@ -125,7 +125,7 @@ const ChatBox = () => {
       </div>
 
       <form
-        className='bg-primary/20 dark:bg-[#583C79]/30 border border-primary dark:border-[#80609F]/30 rounded-full w-full max-w-2xl p-3 pl-5 mx-auto flex gap-4 items-center'
+        className='bg-primary/20 dark:bg-[#0f2c6e]/30 border border-primary dark:border-[#2D4F9E]/30 rounded-full w-full max-w-2xl p-3 pl-5 mx-auto flex gap-4 items-center'
         onSubmit={onSubmit}
       >
 
