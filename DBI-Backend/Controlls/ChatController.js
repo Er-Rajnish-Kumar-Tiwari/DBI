@@ -2,6 +2,13 @@ const { primaryClient, secondaryClient } = require("../Config/openai");
 const { loadKnowledgeBase } = require("../Utils/knowledgeBase");
 const ChatLog = require("../Models/ChatLog");
 const Message = require("../Models/Message");
+const Conversation = require("../Models/Conversation");
+
+const TITLE_MAX_LEN = 60;
+const titleFromMessage = (message) =>
+    message.trim().length > TITLE_MAX_LEN
+        ? `${message.trim().slice(0, TITLE_MAX_LEN)}…`
+        : message.trim();
 
 const MODEL = "gemini-flash-latest";
 const MAX_HISTORY = 12;
@@ -45,13 +52,24 @@ const askModel = async (messages) => {
 
 const sendMessage = async (req, res) => {
     try {
-        const { message, history, lang, userId } = req.body;
+        const { message, history, lang, userId, conversationId } = req.body;
 
         if (!message || !message.trim()) {
             return res.status(400).json({
                 success: false,
                 message: "Message is required",
             });
+        }
+
+        // A message with no conversationId starts a brand-new chat thread —
+        // this must happen before we reply so the id can go back to the client.
+        let activeConversationId = conversationId || null;
+        if (userId && !activeConversationId) {
+            const conversation = await Conversation.create({
+                user: userId,
+                title: titleFromMessage(message),
+            });
+            activeConversationId = conversation._id;
         }
 
         const knowledgeBase = await loadKnowledgeBase();
@@ -90,16 +108,19 @@ const sendMessage = async (req, res) => {
         ChatLog.create({ message, reply: content, language: lang || "auto" }).catch(() => {});
 
         // Fire-and-forget per-user history, when the request came from a logged-in user.
-        if (userId) {
+        if (userId && activeConversationId) {
             Message.insertMany([
-                { user: userId, role: "user", content: message },
-                { user: userId, role: "assistant", content },
+                { user: userId, conversation: activeConversationId, role: "user", content: message },
+                { user: userId, conversation: activeConversationId, role: "assistant", content },
             ]).catch(() => {});
+
+            Conversation.updateOne({ _id: activeConversationId }, {}).catch(() => {});
         }
 
         return res.status(200).json({
             success: true,
             reply,
+            conversationId: activeConversationId,
         });
     } catch (error) {
         console.error("Chat error:", error.message);
@@ -111,13 +132,36 @@ const sendMessage = async (req, res) => {
     }
 };
 
-// Returns a logged-in user's saved chat history so the frontend can
-// repopulate the conversation on return visits.
-const getHistory = async (req, res) => {
+// Lists a logged-in user's past chat threads (newest first), for the sidebar.
+const listConversations = async (req, res) => {
     try {
         const { userId } = req.params;
 
-        const messages = await Message.find({ user: userId })
+        const conversations = await Conversation.find({ user: userId })
+            .sort({ updatedAt: -1 })
+            .lean();
+
+        return res.status(200).json({
+            success: true,
+            conversations: conversations.map((c) => ({
+                id: c._id,
+                title: c.title,
+                updatedAt: c.updatedAt,
+            })),
+        });
+    } catch (error) {
+        console.error("List conversations error:", error.message);
+        return res.status(500).json({ success: false, message: "Failed to load chat history" });
+    }
+};
+
+// Returns the messages of a single chat thread, so reopening it shows exactly
+// that conversation instead of every chat mixed together.
+const getConversationMessages = async (req, res) => {
+    try {
+        const { conversationId } = req.params;
+
+        const messages = await Message.find({ conversation: conversationId })
             .sort({ createdAt: 1 })
             .lean();
 
@@ -130,9 +174,9 @@ const getHistory = async (req, res) => {
             })),
         });
     } catch (error) {
-        console.error("History error:", error.message);
+        console.error("Get conversation messages error:", error.message);
         return res.status(500).json({ success: false, message: "Failed to load chat history" });
     }
 };
 
-module.exports = { sendMessage, getHistory };
+module.exports = { sendMessage, listConversations, getConversationMessages };

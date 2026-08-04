@@ -1,14 +1,24 @@
 import React from "react";
+import moment from "moment/moment";
 import { useAppContext } from "../Context/AppContext";
 import { assets } from "../assets/assets";
 
 const DBI_WEBSITE = "https://digitalbookofindia.com";
 
 const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
-  const { theme, setTheme, lang, setLang, clearChat, messages, user, logout } = useAppContext();
+  const {
+    theme, setTheme, lang, setLang,
+    messages, user, logout,
+    conversationId, conversations, startNewChat, openConversation,
+  } = useAppContext();
 
   const handleNewChat = () => {
-    clearChat();
+    startNewChat();
+    setIsMenuOpen(false);
+  };
+
+  const handleOpenConversation = (id) => {
+    openConversation(id);
     setIsMenuOpen(false);
   };
 
@@ -34,13 +44,44 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
 
       <button
         onClick={handleNewChat}
-        disabled={messages.length === 0}
+        disabled={!conversationId && messages.length === 0}
         className="flex items-center justify-center w-full py-2 mt-6 text-white bg-gradient-to-r from-[#A456F7] to-[#3D81F6] text-sm rounded-md hover:from-[#CDA1FF] hover:to-[#80609F] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
       >
         <span className="mr-2 text-xl">+</span> New Chat
       </button>
 
-      <div className="mt-6">
+      {user && !user.isAdmin && (
+        <div className="flex-1 min-h-0 mt-4 flex flex-col">
+          <p className="text-xs text-gray-500 dark:text-[#9FB3DE] mb-2">Chat history</p>
+          <div className="flex-1 min-h-0 overflow-y-auto flex flex-col gap-1 pr-1">
+            {conversations.length === 0 && (
+              <p className="text-xs text-gray-400 dark:text-[#6C84B8]">No past chats yet.</p>
+            )}
+
+            {conversations.map((c) => (
+              <button
+                key={c.id}
+                onClick={() => handleOpenConversation(c.id)}
+                className={`text-left px-3 py-2 rounded-md text-sm truncate transition-all cursor-pointer ${
+                  conversationId === c.id
+                    ? "bg-primary/30 dark:bg-[#14367a]/50 text-black dark:text-white"
+                    : "hover:bg-black/5 dark:hover:bg-white/5 text-gray-700 dark:text-gray-300"
+                }`}
+                title={c.title}
+              >
+                {c.title}
+                <span className="block text-[10px] text-gray-400 dark:text-[#6C84B8]">
+                  {moment(c.updatedAt).fromNow()}
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {!(user && !user.isAdmin) && <div className="flex-1" />}
+
+      <div className="mt-4">
         <p className="text-xs text-gray-500 dark:text-[#9FB3DE] mb-2">Reply language</p>
         <div className="flex gap-2">
           {languages.map((l) => (
@@ -63,16 +104,14 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
         href={DBI_WEBSITE}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-center gap-2 p-3 mt-6 border border-gray-300 dark:border-white/15 rounded-md cursor-pointer hover:scale-[1.02] transition-all"
+        className="flex items-center gap-2 p-3 mt-4 border border-gray-300 dark:border-white/15 rounded-md cursor-pointer hover:scale-[1.02] transition-all"
       >
         <img src={assets.gallery_icon} alt="Website" className="w-4 brightness-0 dark:invert" />
         <p className="text-sm">Visit DBI website</p>
       </a>
 
-      <div className="flex-1" />
-
       {user && (
-        <div className="flex items-center gap-2 p-3 border border-gray-300 dark:border-white/15 rounded-md justify-between">
+        <div className="flex items-center gap-2 p-3 mt-4 border border-gray-300 dark:border-white/15 rounded-md justify-between">
           <div className="flex items-center gap-2 text-sm min-w-0">
             <img src={assets.user_icon} alt="User" className="w-6 h-6 rounded-full shrink-0" />
             <div className="min-w-0">

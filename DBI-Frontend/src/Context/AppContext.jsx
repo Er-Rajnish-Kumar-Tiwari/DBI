@@ -31,11 +31,47 @@ export const AppContextProvider = ({ children }) => {
   const [user, setUser] = useState(getStoredUser);
   const [authLoading, setAuthLoading] = useState(false);
 
-  const clearChat = () => setMessages([]);
+  // Each chat thread is a separate "conversation" (like ChatGPT/Claude) —
+  // conversationId null means the current view is an unsaved new chat.
+  const [conversationId, setConversationId] = useState(null);
+  const [conversations, setConversations] = useState([]);
 
-  // Identity is keyed by email: an existing email logs in (old chat history
-  // is loaded back in), a new email signs up. The admin email/name from
-  // .env is the one exception — both must match to unlock the dashboard.
+  const refreshConversations = async (userId) => {
+    const id = userId || user?.id;
+    if (!id) return [];
+
+    try {
+      const { data } = await axios.get(`/chat/conversations/${id}`);
+      if (data.success) {
+        setConversations(data.conversations);
+        return data.conversations;
+      }
+    } catch {
+      // Non-fatal: sidebar history list just stays as-is.
+    }
+    return [];
+  };
+
+  const openConversation = async (id) => {
+    try {
+      const { data } = await axios.get(`/chat/conversations/${id}/messages`);
+      if (data.success) {
+        setConversationId(id);
+        setMessages(data.messages);
+      }
+    } catch {
+      toast.error("Failed to open that chat");
+    }
+  };
+
+  const startNewChat = () => {
+    setConversationId(null);
+    setMessages([]);
+  };
+
+  // Identity is keyed by email: an existing email logs in (old chats reappear
+  // in the sidebar), a new email signs up. The admin email/name from .env is
+  // the one exception — both must match to unlock the dashboard.
   const login = async (name, email) => {
     setAuthLoading(true);
     try {
@@ -51,13 +87,11 @@ export const AppContextProvider = ({ children }) => {
       localStorage.setItem("dbi_user", JSON.stringify(loggedInUser));
 
       if (!data.isAdmin && loggedInUser.id) {
-        try {
-          const historyRes = await axios.get(`/chat/history/${loggedInUser.id}`);
-          if (historyRes.data.success) {
-            setMessages(historyRes.data.messages);
-          }
-        } catch {
-          // Non-fatal: user can still chat even if history fails to load.
+        const list = await refreshConversations(loggedInUser.id);
+        if (list.length > 0) {
+          await openConversation(list[0].id);
+        } else {
+          startNewChat();
         }
 
         toast.success(data.isNew ? `Welcome, ${loggedInUser.name}!` : `Welcome back, ${loggedInUser.name}!`);
@@ -75,6 +109,8 @@ export const AppContextProvider = ({ children }) => {
   const logout = () => {
     setUser(null);
     setMessages([]);
+    setConversationId(null);
+    setConversations([]);
     localStorage.removeItem("dbi_user");
   };
 
@@ -92,16 +128,13 @@ export const AppContextProvider = ({ children }) => {
     localStorage.setItem("dbi_lang", lang);
   }, [lang]);
 
-  // Reload a returning user's saved history on page refresh (login() only
-  // fetches it right after a fresh submit, not on an already-stored session).
+  // Reopen a returning user's most recent chat on page refresh (login() only
+  // does this right after a fresh submit, not on an already-stored session).
   useEffect(() => {
     if (user && !user.isAdmin && user.id) {
-      axios
-        .get(`/chat/history/${user.id}`)
-        .then(({ data }) => {
-          if (data.success) setMessages(data.messages);
-        })
-        .catch(() => {});
+      refreshConversations(user.id).then((list) => {
+        if (list.length > 0) openConversation(list[0].id);
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -130,7 +163,12 @@ export const AppContextProvider = ({ children }) => {
     lang,
     setLang,
 
-    clearChat,
+    conversationId,
+    setConversationId,
+    conversations,
+    refreshConversations,
+    openConversation,
+    startNewChat,
 
     user,
     authLoading,

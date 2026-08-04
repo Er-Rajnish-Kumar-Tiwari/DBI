@@ -41,7 +41,12 @@ const UI_TEXT = {
 
 const ChatBox = () => {
 
-  const { messages, setMessages, loading, setLoading, lang, toast, axios, user } = useAppContext();
+  const {
+    messages, setMessages,
+    loading, setLoading,
+    lang, toast, axios, user,
+    conversationId, setConversationId, refreshConversations,
+  } = useAppContext();
   const [prompt, setPrompt] = useState("");
   const containerRef = useRef(null);
 
@@ -58,10 +63,23 @@ const ChatBox = () => {
     setMessages(prev => [...prev, { role: "user", content: trimmed, timestamp: Date.now() }]);
 
     try {
-      const { data } = await axios.post("/chat/message", { message: trimmed, history, lang, userId: user?.id });
+      const { data } = await axios.post("/chat/message", {
+        message: trimmed,
+        history,
+        lang,
+        userId: user?.id,
+        conversationId,
+      });
 
       if (data.success) {
         setMessages(prev => [...prev, data.reply]);
+
+        if (user?.id) {
+          if (data.conversationId && data.conversationId !== conversationId) {
+            setConversationId(data.conversationId);
+          }
+          refreshConversations(user.id);
+        }
       } else {
         toast.error(data.message || "Something went wrong");
       }
