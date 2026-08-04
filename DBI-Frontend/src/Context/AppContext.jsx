@@ -23,10 +23,9 @@ export const AppContextProvider = ({ children }) => {
     localStorage.getItem("dbi_theme") || "light"
   );
 
-  // "auto" lets the bot mirror whatever language the user types in
-  const [lang, setLang] = useState(
-    localStorage.getItem("dbi_lang") || "auto"
-  );
+  // Always "auto": the bot mirrors whatever language the user types in.
+  // There is no UI to change this anymore.
+  const lang = "auto";
 
   const [user, setUser] = useState(getStoredUser);
   const [authLoading, setAuthLoading] = useState(false);
@@ -124,10 +123,6 @@ export const AppContextProvider = ({ children }) => {
     localStorage.setItem("dbi_theme", theme);
   }, [theme]);
 
-  useEffect(() => {
-    localStorage.setItem("dbi_lang", lang);
-  }, [lang]);
-
   // Reopen a returning user's most recent chat on page refresh (login() only
   // does this right after a fresh submit, not on an already-stored session).
   useEffect(() => {
@@ -150,7 +145,6 @@ export const AppContextProvider = ({ children }) => {
     setTheme,
 
     lang,
-    setLang,
 
     conversationId,
     setConversationId,

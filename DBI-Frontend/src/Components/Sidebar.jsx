@@ -7,7 +7,7 @@ const DBI_WEBSITE = "https://digitalbookofindia.com";
 
 const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
   const {
-    theme, setTheme, lang, setLang,
+    theme, setTheme,
     messages, user, logout,
     conversationId, conversations, startNewChat, openConversation,
   } = useAppContext();
@@ -21,12 +21,6 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
     openConversation(id);
     setIsMenuOpen(false);
   };
-
-  const languages = [
-    { code: "auto", label: "Auto" },
-    { code: "en", label: "English" },
-    { code: "hi", label: "हिंदी" },
-  ];
 
   return (
     <div
@@ -45,7 +39,7 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
       <button
         onClick={handleNewChat}
         disabled={!conversationId && messages.length === 0}
-        className="flex items-center justify-center w-full py-2 mt-6 text-white bg-gradient-to-r from-[#A456F7] to-[#3D81F6] text-sm rounded-md hover:from-[#CDA1FF] hover:to-[#80609F] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+        className="flex items-center justify-center w-full py-2 mt-6 text-white bg-[#3D81F6] text-sm rounded-md hover:bg-[#2F6BDB] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
       >
         <span className="mr-2 text-xl">+</span> New Chat
       </button>
@@ -80,25 +74,6 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
       )}
 
       {!(user && !user.isAdmin) && <div className="flex-1" />}
-
-      <div className="mt-4">
-        <p className="text-xs text-gray-500 dark:text-[#9FB3DE] mb-2">Reply language</p>
-        <div className="flex gap-2">
-          {languages.map((l) => (
-            <button
-              key={l.code}
-              onClick={() => setLang(l.code)}
-              className={`flex-1 py-1.5 text-xs rounded-md border transition-all cursor-pointer ${
-                lang === l.code
-                  ? "bg-gradient-to-r from-[#A456F7] to-[#3D81F6] text-white border-transparent"
-                  : "border-gray-300 dark:border-white/15 text-gray-600 dark:text-gray-300"
-              }`}
-            >
-              {l.label}
-            </button>
-          ))}
-        </div>
-      </div>
 
       <a
         href={DBI_WEBSITE}

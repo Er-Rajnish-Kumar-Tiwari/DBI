@@ -86,7 +86,7 @@ const AdminDashboard = () => {
                     onClick={() => openConversation(u, c)}
                     className={`text-left px-2 py-1.5 rounded-md text-sm truncate transition-all cursor-pointer ${
                       selectedConversation?.id === c.id
-                        ? "bg-gradient-to-r from-[#A456F7] to-[#3D81F6] text-white"
+                        ? "bg-[#3D81F6] text-white"
                         : "hover:bg-black/5 dark:hover:bg-white/5 text-gray-700 dark:text-gray-300"
                     }`}
                     title={c.title}

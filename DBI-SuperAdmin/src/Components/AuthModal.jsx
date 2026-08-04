@@ -18,9 +18,9 @@ const AuthModal = () => {
       <div className="w-full max-w-sm bg-white dark:bg-[#0a225e] border border-[#2D4F9E]/30 rounded-xl p-6 shadow-xl">
         <div className="flex flex-col items-center text-center gap-2 mb-6">
           <img src={assets.logo} alt="DBI Bot" className="w-12 h-12" />
-          <p className="text-xl font-semibold text-gray-800 dark:text-white">Welcome to DBI Bot</p>
+          <p className="text-xl font-semibold text-gray-800 dark:text-white">DBI Bot Super Admin</p>
           <p className="text-sm text-gray-500 dark:text-[#9FB3DE]">
-            Enter your name and email to continue. New here? We'll set you up. Been here before? We'll pick up where you left off.
+            Sign in with the admin name and email to access the dashboard.
           </p>
         </div>
 
@@ -31,7 +31,7 @@ const AuthModal = () => {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Your name"
+              placeholder="Admin name"
               required
               className="w-full px-3 py-2 text-sm rounded-md border border-gray-300 dark:border-white/15 bg-transparent outline-none text-black dark:text-white placeholder:text-gray-400"
             />
@@ -43,7 +43,7 @@ const AuthModal = () => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@example.com"
+              placeholder="admin@example.com"
               required
               className="w-full px-3 py-2 text-sm rounded-md border border-gray-300 dark:border-white/15 bg-transparent outline-none text-black dark:text-white placeholder:text-gray-400"
             />
@@ -54,7 +54,7 @@ const AuthModal = () => {
             disabled={authLoading}
             className="w-full py-2 mt-2 text-white text-sm rounded-md bg-[#3D81F6] hover:bg-[#2F6BDB] disabled:opacity-50 cursor-pointer"
           >
-            {authLoading ? "Please wait..." : "Submit"}
+            {authLoading ? "Please wait..." : "Login"}
           </button>
         </form>
       </div>
