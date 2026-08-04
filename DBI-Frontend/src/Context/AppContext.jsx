@@ -139,17 +139,6 @@ export const AppContextProvider = ({ children }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Admin API calls are guarded server-side by these headers.
-  useEffect(() => {
-    if (user?.isAdmin) {
-      axios.defaults.headers.common["x-admin-email"] = user.email;
-      axios.defaults.headers.common["x-admin-name"] = user.name;
-    } else {
-      delete axios.defaults.headers.common["x-admin-email"];
-      delete axios.defaults.headers.common["x-admin-name"];
-    }
-  }, [user]);
-
   const value = {
     messages,
     setMessages,

@@ -15,10 +15,17 @@ const AdminDashboard = () => {
   const [history, setHistory] = useState([]);
   const [loadingHistory, setLoadingHistory] = useState(false);
 
+  // Sent explicitly on every admin call (rather than as an axios default)
+  // so there's no dependency on effect-ordering/timing after login.
+  const adminHeaders = {
+    "x-admin-email": user?.email,
+    "x-admin-name": user?.name,
+  };
+
   const fetchUsers = async () => {
     setLoadingUsers(true);
     try {
-      const { data } = await axios.get("/admin/users");
+      const { data } = await axios.get("/admin/users", { headers: adminHeaders });
       if (data.success) setUsers(data.users);
       else toast.error(data.message || "Failed to load users");
     } catch (error) {
@@ -38,7 +45,7 @@ const AdminDashboard = () => {
     setSelectedConversation(conversation);
     setLoadingHistory(true);
     try {
-      const { data } = await axios.get(`/admin/conversations/${conversation.id}/messages`);
+      const { data } = await axios.get(`/admin/conversations/${conversation.id}/messages`, { headers: adminHeaders });
       if (data.success) setHistory(data.messages);
       else toast.error(data.message || "Failed to load chat history");
     } catch (error) {
