@@ -1,4 +1,4 @@
-import logo from "./logo.svg";
+const logo = "/DBI-logo.png";
 import user_icon from "./user_icon.svg";
 import theme_icon from "./theme_icon.svg";
 import send_icon from "./send_icon.svg";

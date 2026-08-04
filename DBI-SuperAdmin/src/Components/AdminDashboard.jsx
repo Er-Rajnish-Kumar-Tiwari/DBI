@@ -58,12 +58,8 @@ const AdminDashboard = () => {
   return (
     <div className="flex h-screen w-screen bg-white text-black dark:bg-[#0a225e] dark:text-white">
       <div className="flex flex-col w-80 shrink-0 h-full border-r border-[#2D4F9E]/30 p-5">
-        <div className="flex items-center gap-2">
-          <img src={assets.logo} alt="DBI Bot" className="w-9 h-9" />
-          <div>
-            <p className="font-semibold text-lg leading-tight">DBI Bot Admin</p>
-            <p className="text-xs text-gray-500 dark:text-[#9FB3DE]">{user?.name}</p>
-          </div>
+        <div className="flex items-center justify-center">
+          <img src={assets.logo} alt="DBI Bot" className="h-28 w-auto object-contain" />
         </div>
 
         <p className="text-xs text-gray-500 dark:text-[#9FB3DE] mt-6 mb-2">
@@ -125,7 +121,7 @@ const AdminDashboard = () => {
       <div className="flex-1 flex flex-col m-5 md:m-10">
         {!selectedConversation && (
           <div className="h-full flex flex-col items-center justify-center gap-3 text-center">
-            <img src={assets.logo} alt="DBI Bot" className="w-16 h-16" />
+            <img src={assets.logo} alt="DBI Bot" className="h-24 w-auto object-contain" />
             <p className="text-3xl sm:text-5xl text-gray-700 dark:text-white font-medium">Welcome, Admin</p>
             <p className="text-base sm:text-lg text-gray-400 dark:text-gray-300">
               Select a chat from the left to view its history.

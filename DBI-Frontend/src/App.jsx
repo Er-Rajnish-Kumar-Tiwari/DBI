@@ -25,7 +25,7 @@ function App() {
       <>
         <div className="flex h-screen w-screen items-center justify-center bg-white text-black dark:bg-[#0a225e] dark:text-white px-4">
           <div className="flex flex-col items-center text-center gap-3">
-            <img src={assets.logo} alt="DBI Bot" className="w-12 h-12" />
+            <img src={assets.logo} alt="DBI Bot" className="h-28 w-auto object-contain" />
             <p className="text-xl font-semibold">Admin access</p>
             <p className="text-sm text-gray-500 dark:text-[#9FB3DE]">
               Please use the Super Admin dashboard to manage conversations.

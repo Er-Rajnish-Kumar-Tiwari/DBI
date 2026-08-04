@@ -112,7 +112,7 @@ const ChatBox = () => {
 
         {messages.length === 0 && (
           <div className='h-full flex flex-col items-center justify-center gap-4 text-primary text-center'>
-            <img src={assets.logo} alt="DBI Bot" className="w-16 h-16 sm:w-20 sm:h-20" />
+            <img src={assets.logo} alt="DBI Bot" className="h-24 sm:h-32 w-auto object-contain" />
             <div>
               <p className='text-3xl sm:text-5xl text-gray-700 dark:text-white font-medium'>{t.heading}</p>
               <p className='mt-2 text-base sm:text-lg text-gray-400 dark:text-gray-300'>{t.subheading}</p>

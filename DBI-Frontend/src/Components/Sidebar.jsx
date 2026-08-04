@@ -7,7 +7,6 @@ const DBI_WEBSITE = "https://digitalbookofindia.com";
 
 const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
   const {
-    theme, setTheme,
     messages, user, logout,
     conversationId, conversations, startNewChat, openConversation,
   } = useAppContext();
@@ -28,12 +27,8 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
         !isMenuOpen && "max-md:-translate-x-full"
       }`}
     >
-      <div className="flex items-center gap-2">
-        <img src={assets.logo} alt="DBI Bot" className="w-9 h-9" />
-        <div>
-          <p className="font-semibold text-lg leading-tight">DBI Bot</p>
-          <p className="text-xs text-gray-500 dark:text-[#9FB3DE]">Digital Book of India Support</p>
-        </div>
+      <div className="flex items-center justify-center">
+        <img src={assets.logo} alt="DBI Bot" className="h-28 w-auto object-contain" />
       </div>
 
       <button
@@ -103,24 +98,6 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
           </button>
         </div>
       )}
-
-      <div className="flex items-center gap-2 p-3 mt-4 border border-gray-300 dark:border-white/15 rounded-md justify-between">
-        <div className="flex items-center gap-2 text-sm">
-          <img src={assets.theme_icon} alt="Theme" className="w-4 brightness-0 dark:invert" />
-          <p>Dark Mode</p>
-        </div>
-
-        <label className="relative inline-flex cursor-pointer">
-          <input
-            type="checkbox"
-            className="sr-only peer"
-            checked={theme === "dark"}
-            onChange={() => setTheme(theme === "dark" ? "light" : "dark")}
-          />
-          <div className="w-9 h-5 bg-gray-400 rounded-full peer-checked:bg-[#2D4F9E] transition-all"></div>
-          <span className="absolute left-1 top-1 w-3 h-3 bg-white rounded-full transition-transform peer-checked:translate-x-4"></span>
-        </label>
-      </div>
 
       <p className="text-[10px] text-center text-gray-400 dark:text-[#6C84B8] mt-4">
         DBI Bot can make mistakes. Verify important info on the DBI website.

@@ -17,8 +17,7 @@ const AuthModal = () => {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-white dark:bg-[#0a225e] px-4">
       <div className="w-full max-w-sm bg-white dark:bg-[#0a225e] border border-[#2D4F9E]/30 rounded-xl p-6 shadow-xl">
         <div className="flex flex-col items-center text-center gap-2 mb-6">
-          <img src={assets.logo} alt="DBI Bot" className="w-12 h-12" />
-          <p className="text-xl font-semibold text-gray-800 dark:text-white">Welcome to DBI Bot</p>
+          <img src={assets.logo} alt="DBI Bot" className="h-32 w-auto object-contain" />
           <p className="text-sm text-gray-500 dark:text-[#9FB3DE]">
             Enter your name and email to continue. New here? We'll set you up. Been here before? We'll pick up where you left off.
           </p>
