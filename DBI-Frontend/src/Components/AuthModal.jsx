@@ -14,37 +14,37 @@ const AuthModal = () => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-white dark:bg-[#0a225e] px-4">
-      <div className="w-full max-w-sm bg-white dark:bg-[#0a225e] border border-[#2D4F9E]/30 rounded-xl p-6 shadow-xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-white px-4">
+      <div className="w-full max-w-sm bg-white border border-[#2D4F9E]/30 rounded-xl p-6 shadow-xl">
         <div className="flex flex-col items-center text-center gap-2 mb-6">
           <img src={assets.logo} alt="DBI Bot" className="h-32 w-auto object-contain" />
-          <p className="text-sm text-gray-500 dark:text-[#9FB3DE]">
+          <p className="text-sm text-gray-500">
             Enter your name and email to continue. New here? We'll set you up. Been here before? We'll pick up where you left off.
           </p>
         </div>
 
         <form onSubmit={onSubmit} className="flex flex-col gap-4">
           <div className="flex flex-col gap-1">
-            <label className="text-xs text-gray-500 dark:text-[#9FB3DE]">Name</label>
+            <label className="text-xs text-gray-500">Name</label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Your name"
               required
-              className="w-full px-3 py-2 text-sm rounded-md border border-gray-300 dark:border-white/15 bg-transparent outline-none text-black dark:text-white placeholder:text-gray-400"
+              className="w-full px-3 py-2 text-sm rounded-md border border-gray-300 bg-transparent outline-none text-black placeholder:text-gray-400"
             />
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-xs text-gray-500 dark:text-[#9FB3DE]">Email</label>
+            <label className="text-xs text-gray-500">Email</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
               required
-              className="w-full px-3 py-2 text-sm rounded-md border border-gray-300 dark:border-white/15 bg-transparent outline-none text-black dark:text-white placeholder:text-gray-400"
+              className="w-full px-3 py-2 text-sm rounded-md border border-gray-300 bg-transparent outline-none text-black placeholder:text-gray-400"
             />
           </div>
 

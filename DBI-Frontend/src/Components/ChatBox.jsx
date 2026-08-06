@@ -111,11 +111,11 @@ const ChatBox = () => {
       <div className='flex-1 mb-5 overflow-y-scroll' ref={containerRef}>
 
         {messages.length === 0 && (
-          <div className='h-full flex flex-col items-center justify-center gap-4 text-primary text-center'>
+          <div className='h-full flex flex-col items-center justify-center gap-4 text-center'>
             <img src={assets.logo} alt="DBI Bot" className="h-24 sm:h-32 w-auto object-contain" />
             <div>
-              <p className='text-3xl sm:text-5xl text-gray-700 dark:text-white font-medium'>{t.heading}</p>
-              <p className='mt-2 text-base sm:text-lg text-gray-400 dark:text-gray-300'>{t.subheading}</p>
+              <p className='text-3xl sm:text-5xl text-gray-700 font-medium'>{t.heading}</p>
+              <p className='mt-2 text-base sm:text-lg text-gray-400'>{t.subheading}</p>
             </div>
 
             <div className='flex flex-wrap justify-center gap-2 mt-2 max-w-2xl'>
@@ -123,7 +123,7 @@ const ChatBox = () => {
                 <button
                   key={q}
                   onClick={() => sendMessage(q)}
-                  className='text-sm px-4 py-2 rounded-full border border-primary dark:border-[#2D4F9E]/40 bg-primary/10 dark:bg-[#14367a]/20 hover:bg-primary/20 dark:hover:bg-[#14367a]/40 transition-all cursor-pointer'
+                  className='text-sm text-gray-800 font-medium px-4 py-2 rounded-full border border-primary bg-primary/10 hover:bg-primary/20 transition-all cursor-pointer'
                 >
                   {q}
                 </button>
@@ -135,22 +135,22 @@ const ChatBox = () => {
         {messages.map((message, index) => <Message key={index} message={message} />)}
 
         {loading && <div className='loader flex items-center gap-1.5'>
-          <div className='w-1.5 h-1.5 rounded-full bg-gray-500 dark:bg-white animate-bounce '></div>
-          <div className='w-1.5 h-1.5 rounded-full bg-gray-500 dark:bg-white animate-bounce '></div>
-          <div className='w-1.5 h-1.5 rounded-full bg-gray-500 dark:bg-white animate-bounce '></div>
+          <div className='w-1.5 h-1.5 rounded-full bg-gray-500 animate-bounce '></div>
+          <div className='w-1.5 h-1.5 rounded-full bg-gray-500 animate-bounce '></div>
+          <div className='w-1.5 h-1.5 rounded-full bg-gray-500 animate-bounce '></div>
         </div>}
 
       </div>
 
       <form
-        className='bg-primary/20 dark:bg-[#0f2c6e]/30 border border-primary dark:border-[#2D4F9E]/30 rounded-full w-full max-w-2xl p-3 pl-5 mx-auto flex gap-4 items-center'
+        className='bg-primary/20 border border-primary rounded-full w-full max-w-2xl p-3 pl-5 mx-auto flex gap-4 items-center'
         onSubmit={onSubmit}
       >
 
         <input
           type="text"
           placeholder={t.placeholder}
-          className='flex-1 w-full text-sm outline-none bg-transparent text-black dark:text-white placeholder:text-gray-600 dark:placeholder:text-gray-300'
+          className='flex-1 w-full text-sm outline-none bg-transparent text-black placeholder:text-gray-600'
           required
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}

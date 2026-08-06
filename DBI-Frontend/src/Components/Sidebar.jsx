@@ -23,7 +23,7 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
 
   return (
     <div
-      className={`flex flex-col h-screen w-72 shrink-0 p-5 dark:bg-[#0a225e]/40 border-r border-[#2D4F9E]/30 backdrop-blur-3xl transition-all duration-500 max-md:absolute left-0 z-20 ${
+      className={`flex flex-col h-screen w-72 shrink-0 p-5 border-r border-[#2D4F9E]/30 backdrop-blur-3xl transition-all duration-500 max-md:absolute left-0 z-20 ${
         !isMenuOpen && "max-md:-translate-x-full"
       }`}
     >
@@ -41,10 +41,10 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
 
       {user && !user.isAdmin && (
         <div className="flex-1 min-h-0 mt-4 flex flex-col">
-          <p className="text-xs text-gray-500 dark:text-[#9FB3DE] mb-2">Chat history</p>
+          <p className="text-xs text-gray-500 mb-2">Chat history</p>
           <div className="flex-1 min-h-0 overflow-y-auto flex flex-col gap-1 pr-1">
             {conversations.length === 0 && (
-              <p className="text-xs text-gray-400 dark:text-[#6C84B8]">No past chats yet.</p>
+              <p className="text-xs text-gray-400">No past chats yet.</p>
             )}
 
             {conversations.map((c) => (
@@ -53,13 +53,13 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
                 onClick={() => handleOpenConversation(c.id)}
                 className={`text-left px-3 py-2 rounded-md text-sm truncate transition-all cursor-pointer ${
                   conversationId === c.id
-                    ? "bg-primary/30 dark:bg-[#14367a]/50 text-black dark:text-white"
-                    : "hover:bg-black/5 dark:hover:bg-white/5 text-gray-700 dark:text-gray-300"
+                    ? "bg-primary/30 text-black"
+                    : "hover:bg-black/5 text-gray-700"
                 }`}
                 title={c.title}
               >
                 {c.title}
-                <span className="block text-[10px] text-gray-400 dark:text-[#6C84B8]">
+                <span className="block text-[10px] text-gray-400">
                   {moment(c.updatedAt).fromNow()}
                 </span>
               </button>
@@ -74,39 +74,39 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
         href={DBI_WEBSITE}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-center gap-2 p-3 mt-4 border border-gray-300 dark:border-white/15 rounded-md cursor-pointer hover:scale-[1.02] transition-all"
+        className="flex items-center gap-2 p-3 mt-4 border border-gray-300 rounded-md cursor-pointer hover:scale-[1.02] transition-all"
       >
-        <img src={assets.gallery_icon} alt="Website" className="w-4 brightness-0 dark:invert" />
+        <img src={assets.gallery_icon} alt="Website" className="w-4 brightness-0" />
         <p className="text-sm">Visit DBI website</p>
       </a>
 
       {user && (
-        <div className="flex items-center gap-2 p-3 mt-4 border border-gray-300 dark:border-white/15 rounded-md justify-between">
+        <div className="flex items-center gap-2 p-3 mt-4 border border-gray-300 rounded-md justify-between">
           <div className="flex items-center gap-2 text-sm min-w-0">
             <img src={assets.user_icon} alt="User" className="w-6 h-6 rounded-full shrink-0" />
             <div className="min-w-0">
               <p className="truncate">{user.name}</p>
-              <p className="text-xs text-gray-500 dark:text-[#9FB3DE] truncate">{user.email}</p>
+              <p className="text-xs text-gray-500 truncate">{user.email}</p>
             </div>
           </div>
 
           <button
             onClick={logout}
-            className="text-xs text-gray-500 dark:text-[#9FB3DE] hover:text-purple-500 cursor-pointer shrink-0"
+            className="text-xs text-gray-500 hover:text-purple-500 cursor-pointer shrink-0"
           >
             Logout
           </button>
         </div>
       )}
 
-      <p className="text-[10px] text-center text-gray-400 dark:text-[#6C84B8] mt-4">
+      <p className="text-[10px] text-center text-gray-400 mt-4">
         DBI Bot can make mistakes. Verify important info on the DBI website.
       </p>
 
       <img
         src={assets.close_icon}
         alt="Close"
-        className="absolute top-3 right-3 w-5 h-5 cursor-pointer md:hidden brightness-0 dark:invert"
+        className="absolute top-3 right-3 w-5 h-5 cursor-pointer md:hidden brightness-0"
         onClick={() => setIsMenuOpen(false)}
       />
     </div>

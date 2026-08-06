@@ -19,9 +19,6 @@ export const AppContextProvider = ({ children }) => {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // Always dark: there is no UI to change this anymore.
-  const theme = "dark";
-
   // Always "auto": the bot mirrors whatever language the user types in.
   // There is no UI to change this anymore.
   const lang = "auto";
@@ -112,10 +109,6 @@ export const AppContextProvider = ({ children }) => {
     localStorage.removeItem("dbi_user");
   };
 
-  useEffect(() => {
-    document.documentElement.classList.add("dark");
-  }, []);
-
   // Reopen a returning user's most recent chat on page refresh (login() only
   // does this right after a fresh submit, not on an already-stored session).
   useEffect(() => {
@@ -133,8 +126,6 @@ export const AppContextProvider = ({ children }) => {
 
     loading,
     setLoading,
-
-    theme,
 
     lang,
 
